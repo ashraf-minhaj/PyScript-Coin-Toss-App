@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="style.css" />
+		<script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+		<title>Toss</title>
+	</head>
+
+	<body>
+		<main class="container">
+        <h1 class="title">Toss</h1>
+        <div>
+            <label for="choose-side">Choose:</label>
+            <select name="choose-side" id="choose-side">
+                <option value="0">Head</option>
+                <option value="1">Tails</option>
+            </select>
+        </div>
+
+		<div class="coin-feild">
+            <img id="coin-image" src="assets/head.png" alt="">
+        </div>
+        <button type="button" id="button">Toss</button>
+        <h1 id="result">Your Result Show Here</h1>
+
+
+	<py-script>
+		from js import document 
+		from pyodide import create_proxy
+		import random
+
+		images = ['assets/head.png', 'assets/tails.png']
+
+		output = ""
+
+		def changeCoin(event):
+			num = random.randint(0, 1)
+
+			document.getElementById("coin-image").src = images[num]
+
+			selected_side = int(document.getElementById('choose-side').value)
+			result = document.getElementById("result")
+
+			#print(seleted side wins, other loses)
+
+			if (selected_side == num):
+				output = "You won"
+				result.style.color = "green"
+			else:
+				output = "You Lose"
+				result.style.color = "red"
+
+			result.textContent = output
+			
+		function_proxy = create_proxy(changeCoin)
+		document.getElementById("button").addEventListener("click", function_proxy)
+	</py-script>
+
+	</body>
+
+</html>
